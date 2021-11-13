@@ -23,6 +23,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.Display;
 
@@ -47,6 +49,8 @@ public class DeviceSettings extends PreferenceFragment
     public static final String KEY_HBM_SWITCH = "hbm";
     public static final String KEY_DC_SWITCH = "dc";
     public static final String KEY_OTG_SWITCH = "otg";
+	public static final String KEY_VIBRATION_STRENGTH = "vibration_strength";
+	public static final String VIB_STRENGTH_SYSTEM_PROPERTY = "persist.vib_strength";
     public static final String KEY_GAME_SWITCH = "game";
     public static final String KEY_CHARGING_SWITCH = "smart_charging";
     public static final String KEY_RESET_STATS = "reset_stats";
@@ -66,6 +70,8 @@ public class DeviceSettings extends PreferenceFragment
     private static NotificationManager mNotificationManager;
     public TwoStatePreference mDNDSwitch;
     public PreferenceCategory mPreferenceCategory;
+	private Vibrator mVibrator;
+	private SecureSettingListPreference mVibStrength;
     private TwoStatePreference mDCModeSwitch;
     private TwoStatePreference mSRGBModeSwitch;
     private TwoStatePreference mHBMModeSwitch;
@@ -136,6 +142,13 @@ public class DeviceSettings extends PreferenceFragment
         mCABC.setSummary(mCABC.getEntry());
         mCABC.setOnPreferenceChangeListener(this);
 
+        mVibStrength = (SecureSettingListPreference) findPreference(KEY_VIBRATION_STRENGTH);
+        mVibStrength.setValue(Utils.getStringProp(VIB_STRENGTH_SYSTEM_PROPERTY, "2500"));
+        mVibStrength.setSummary(mVibStrength.getEntry());
+        mVibStrength.setOnPreferenceChangeListener(this);
+
+        mVibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+
         isSmartChgAvailable();
     }
 
@@ -146,6 +159,11 @@ public class DeviceSettings extends PreferenceFragment
             mCABC.setValue((String) newValue);
             mCABC.setSummary(mCABC.getEntry());
             Utils.setStringProp(CABC_SYSTEM_PROPERTY, (String) newValue);
+        } else if (preference == mVibStrength) {
+            mVibStrength.setValue((String) newValue);
+            mVibStrength.setSummary(mVibStrength.getEntry());
+            Utils.setStringProp(VIB_STRENGTH_SYSTEM_PROPERTY, (String) newValue);
+            mVibrator.vibrate(VibrationEffect.createOneShot(85, VibrationEffect.DEFAULT_AMPLITUDE));
         }
         return true;
     }

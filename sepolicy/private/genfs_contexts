@@ -1,0 +1,2 @@
+# Vibration
+genfscon sysfs /sys/class/leds/vibrator/vmax         u:object_r:sysfs_vibrator:s0
