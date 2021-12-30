@@ -50,17 +50,13 @@ public class RefreshRateTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPrefs.getBoolean("refresh_rate_90_device", false)) {
-            getQsTile().setState(Tile.STATE_UNAVAILABLE);
-            getQsTile().setLabel(getResources().getString(R.string.unsupported));
-        } else {
-            enabled = RefreshRateSwitch.isCurrentlyEnabled(this);
-            RefreshRateSwitch.setPeakRefresh(this, enabled);
-            getQsTile().setIcon(Icon.createWithResource(this,
-                    GetSmoothDisplay() ? R.drawable.refresh_rate_90forced_icon : (enabled ? R.drawable.ic_refresh_tile_90 : R.drawable.ic_refresh_tile_60)));
-            getQsTile().setState(GetSmoothDisplay() ? Tile.STATE_ACTIVE : (enabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE));
-            getQsTile().setLabel(GetSmoothDisplay() ? "Smooth Display" : "Refresh Rate");
-        }
+
+        enabled = RefreshRateSwitch.isCurrentlyEnabled(this);
+        RefreshRateSwitch.setPeakRefresh(this, enabled);
+        getQsTile().setIcon(Icon.createWithResource(this,
+            GetSmoothDisplay() ? R.drawable.refresh_rate_90forced_icon : (enabled ? R.drawable.ic_refresh_tile_90 : R.drawable.ic_refresh_tile_60)));
+        getQsTile().setState(GetSmoothDisplay() ? Tile.STATE_ACTIVE : (enabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE));
+        getQsTile().setLabel(GetSmoothDisplay() ? "Smooth Display" : "Refresh Rate");
         getQsTile().updateTile();
     }
 
