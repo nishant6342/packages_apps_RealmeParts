@@ -64,8 +64,6 @@ public class DeviceSettings extends PreferenceFragment
     public static SecureSettingListPreference mChargingSpeed;
     public static TwoStatePreference mResetStats;
     public static TwoStatePreference mRefreshRate90Forced;
-    public static RadioButtonPreference mRefreshRate90;
-    public static RadioButtonPreference mRefreshRate60;
     public static SeekBarPreference mSeekBarPreference;
     public static DisplayManager mDisplayManager;
     private static NotificationManager mNotificationManager;
@@ -141,14 +139,6 @@ public class DeviceSettings extends PreferenceFragment
         mRefreshRate90Forced.setChecked(prefs.getBoolean("refresh_rate_90Forced", false));
         mRefreshRate90Forced.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
 
-        mRefreshRate90 = findPreference("refresh_rate_90");
-        mRefreshRate90.setChecked(RefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        mRefreshRate90.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
-
-        mRefreshRate60 = findPreference("refresh_rate_60");
-        mRefreshRate60.setChecked(!RefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        mRefreshRate60.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
-
         mFpsInfo = findPreference(KEY_FPS_INFO);
         mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
         mFpsInfo.setOnPreferenceChangeListener(this);
@@ -158,14 +148,6 @@ public class DeviceSettings extends PreferenceFragment
         mCABC.setSummary(mCABC.getEntry());
         mCABC.setOnPreferenceChangeListener(this);
 
-        // Few checks to enable/disable options when activity is launched
-        if ((prefs.getBoolean("refresh_rate_90", false) && prefs.getBoolean("refresh_rate_90Forced", false))) {
-            mRefreshRate60.setEnabled(false);
-            mRefreshRate90.setEnabled(false);
-        } else if ((prefs.getBoolean("refresh_rate_60", false))) {
-            mRefreshRate90Forced.setEnabled(false);
-        }
-
         isCoolDownAvailable();
         DisplayRefreshRateModes();
         try {
@@ -173,22 +155,6 @@ public class DeviceSettings extends PreferenceFragment
         } catch (Exception e) {
             Log.d("DeviceSettings", e.toString());
         }
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
-        if (preference == mRefreshRate90) {
-            mRefreshRate60.setChecked(false);
-            mRefreshRate90.setChecked(true);
-            mRefreshRate90Forced.setEnabled(true);
-            return true;
-        } else if (preference == mRefreshRate60) {
-            mRefreshRate60.setChecked(true);
-            mRefreshRate90.setChecked(false);
-            mRefreshRate90Forced.setEnabled(false);
-            return true;
-        }
-        return super.onPreferenceTreeClick(preference);
     }
 
     @Override
