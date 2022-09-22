@@ -2,7 +2,7 @@ allow system_app proc_tp:dir search;
 allow system_app proc_tp:file rw_file_perms;
 
 # Allow system app to set vibration prop
-allow system_app vib_strength_prop:property_service { set };
+set_prop(system_app, system_vib_strength_prop)
 
 # Allow system_app to set cabc props
-set_prop(system_app, cabc_prop)
+set_prop(system_app, system_cabc_prop)

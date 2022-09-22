@@ -1,2 +1,2 @@
-type cabc_prop, property_type;
-type vib_strength_prop, property_type;
+system_internal_prop(system_cabc_prop)
+system_internal_prop(system_vib_strength_prop)
