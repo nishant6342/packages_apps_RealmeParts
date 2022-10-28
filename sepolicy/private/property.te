@@ -1,2 +1,3 @@
 system_internal_prop(system_cabc_prop)
 system_internal_prop(system_vib_strength_prop)
+system_internal_prop(system_perf_profile_prop)

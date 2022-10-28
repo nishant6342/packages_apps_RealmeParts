@@ -6,3 +6,6 @@ set_prop(system_app, system_vib_strength_prop)
 
 # Allow system_app to set cabc props
 set_prop(system_app, system_cabc_prop)
+
+# RealmeParts Perf Profile
+set_prop(system_app, system_perf_profile_prop)
