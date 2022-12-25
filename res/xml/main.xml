@@ -125,11 +125,5 @@
             android:summary="@string/otg_mode_summary"
             android:title="@string/otg_mode_title" />
 
-        <SwitchPreference
-            android:icon="@drawable/fps_info_icon"
-            android:key="fps_info"
-            android:title="@string/fps_info_title"
-            android:summary="@string/fps_info_summary"
-            android:persistent="true" />
     </PreferenceCategory>
 </PreferenceScreen>

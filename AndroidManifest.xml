@@ -130,9 +130,6 @@
             </intent-filter>
         </service>
        
-        <service android:name="com.realmeparts.FPSInfoService"
-                android:exported="false">
-        </service>
         <service
             android:name="com.realmeparts.OtgToggleService"
             android:icon="@drawable/ic_otg_tile"

@@ -54,7 +54,6 @@ public class DeviceSettings extends PreferenceFragment
     public static final String KEY_DND_SWITCH = "dnd";
     public static final String KEY_CABC = "cabc";
     public static final String CABC_SYSTEM_PROPERTY = "persist.cabc_profile";
-    public static final String KEY_FPS_INFO = "fps_info";
     public static final String KEY_SETTINGS_PREFIX = "device_setting_";
     public static final String TP_DIRECTION = "/proc/touchpanel/oplus_tp_direction";
     private static final String ProductName = Utils.ProductName();
@@ -75,7 +74,6 @@ public class DeviceSettings extends PreferenceFragment
     private TwoStatePreference mOTGModeSwitch;
     private TwoStatePreference mGameModeSwitch;
     private TwoStatePreference mSmartChargingSwitch;
-    private SwitchPreference mFpsInfo;
     private boolean CABC_DeviceMatched;
     private boolean DC_DeviceMatched;
     private boolean HBM_DeviceMatched;
@@ -139,41 +137,20 @@ public class DeviceSettings extends PreferenceFragment
         mRefreshRate90Forced.setChecked(prefs.getBoolean("refresh_rate_90Forced", false));
         mRefreshRate90Forced.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
 
-        mFpsInfo = findPreference(KEY_FPS_INFO);
-        mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
-        mFpsInfo.setOnPreferenceChangeListener(this);
-
         mCABC = (SecureSettingListPreference) findPreference(KEY_CABC);
         mCABC.setValue(Utils.getStringProp(CABC_SYSTEM_PROPERTY, "0"));
         mCABC.setSummary(mCABC.getEntry());
         mCABC.setOnPreferenceChangeListener(this);
 
         isCoolDownAvailable();
-        DisplayRefreshRateModes();
-        try {
-            ParseJson();
-        } catch (Exception e) {
-            Log.d("DeviceSettings", e.toString());
-        }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mFpsInfo) {
-            boolean enabled = (Boolean) newValue;
-            if (enabled) {
-                Utils.startService(this.getContext(), com.realmeparts.FPSInfoService.class);
-            } else {
-                Utils.stopService(this.getContext(), com.realmeparts.FPSInfoService.class);
-            }
-        }
-
         if (preference == mChargingSpeed) {
             mChargingSpeed.setValue((String) newValue);
             mChargingSpeed.setSummary(mChargingSpeed.getEntry());
-        }
-
-        if (preference == mCABC) {
+        } else if (preference == mCABC) {
             mCABC.setValue((String) newValue);
             mCABC.setSummary(mCABC.getEntry());
             Utils.setStringProp(CABC_SYSTEM_PROPERTY, (String) newValue);
@@ -192,91 +169,5 @@ public class DeviceSettings extends PreferenceFragment
         } else {
             getPreferenceScreen().removePreference(mPreferenceCategory);
         }
-    }
-
-    // Remove display refresh rate modes category if display doesn't support 90hz
-    private void DisplayRefreshRateModes() {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        String refreshRate = "";
-        mDisplayManager = (DisplayManager) this.getContext().getSystemService(Context.DISPLAY_SERVICE);
-        Display.Mode[] DisplayModes = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY).getSupportedModes();
-        for (Display.Mode mDisplayMode : DisplayModes) {
-            DecimalFormat df = new DecimalFormat("0.##");
-            refreshRate += df.format(mDisplayMode.getRefreshRate()) + "Hz, ";
-        }
-        Log.d("DeviceSettings", "Device supports " + refreshRate + "refresh rate modes");
-
-        if (!refreshRate.contains("90")) {
-            prefs.edit().putBoolean("refresh_rate_90_device", false).apply();
-            mPreferenceCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_REFRESH_RATE);
-            getPreferenceScreen().removePreference(mPreferenceCategory);
-        } else prefs.edit().putBoolean("refresh_rate_90_device", true).apply();
-    }
-
-    private void ParseJson() throws JSONException {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        mPreferenceCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_GRAPHICS);
-        String features_json = Utils.InputStreamToString(getResources().openRawResource(R.raw.realmeparts_features));
-        JSONObject jsonOB = new JSONObject(features_json);
-
-        JSONArray CABC = jsonOB.getJSONArray(KEY_CABC);
-        for (int i = 0; i < CABC.length(); i++) {
-            if (ProductName.toUpperCase().contains(CABC.getString(i))) {
-                {
-                    CABC_DeviceMatched = true;
-                }
-            }
-        }
-
-        JSONArray DC = jsonOB.getJSONArray(KEY_DC_SWITCH);
-        for (int i = 0; i < DC.length(); i++) {
-            if (ProductName.toUpperCase().contains(DC.getString(i))) {
-                {
-                    DC_DeviceMatched = true;
-                }
-            }
-        }
-
-        JSONArray HBM = jsonOB.getJSONArray(KEY_HBM_SWITCH);
-        for (int i = 0; i < HBM.length(); i++) {
-            if (ProductName.toUpperCase().contains(HBM.getString(i))) {
-                {
-                    HBM_DeviceMatched = true;
-                }
-            }
-        }
-
-        JSONArray sRGB = jsonOB.getJSONArray(KEY_SRGB_SWITCH);
-        for (int i = 0; i < sRGB.length(); i++) {
-            if (ProductName.toUpperCase().contains(sRGB.getString(i))) {
-                {
-                    sRGB_DeviceMatched = true;
-                }
-            }
-        }
-
-        // Remove CABC preference if device is unsupported
-        if (!CABC_DeviceMatched) {
-            mPreferenceCategory.removePreference(findPreference(KEY_CABC));
-            prefs.edit().putBoolean("CABC_DeviceMatched", false).apply();
-        } else prefs.edit().putBoolean("CABC_DeviceMatched", true).apply();
-
-        // Remove DC-Dimming preference if device is unsupported
-        if (!DC_DeviceMatched) {
-            mPreferenceCategory.removePreference(findPreference(KEY_DC_SWITCH));
-            prefs.edit().putBoolean("DC_DeviceMatched", false).apply();
-        } else prefs.edit().putBoolean("DC_DeviceMatched", true).apply();
-
-        // Remove HBM preference if device is unsupported
-        if (!HBM_DeviceMatched) {
-            mPreferenceCategory.removePreference(findPreference(KEY_HBM_SWITCH));
-            prefs.edit().putBoolean("HBM_DeviceMatched", false).apply();
-        } else prefs.edit().putBoolean("HBM_DeviceMatched", true).apply();
-
-        // Remove sRGB preference if device is unsupported
-        if (!sRGB_DeviceMatched) {
-            mPreferenceCategory.removePreference(findPreference(KEY_SRGB_SWITCH));
-            prefs.edit().putBoolean("sRGB_DeviceMatched", false).apply();
-        } else prefs.edit().putBoolean("sRGB_DeviceMatched", true).apply();
     }
 }
