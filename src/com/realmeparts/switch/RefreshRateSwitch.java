@@ -55,9 +55,9 @@ public class RefreshRateSwitch implements OnPreferenceChangeListener {
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Boolean enabled = (Boolean) newValue;
-        if (preference == DeviceSettings.mRefreshRate90Forced && enabled) {
+        if (preference == DeviceSettings.mRefreshRate120Forced && enabled) {
             setForcedRefreshRate(1);
-        } else if (preference == DeviceSettings.mRefreshRate90Forced && !enabled) {
+        } else if (preference == DeviceSettings.mRefreshRate120Forced && !enabled) {
             setForcedRefreshRate(0);
         }
         return true;

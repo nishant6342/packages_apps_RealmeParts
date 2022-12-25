@@ -66,11 +66,7 @@ public class Startup extends BroadcastReceiver {
         if (enabled) {
             Utils.startService(context, SmartChargingService.class);
         }
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_FPS_INFO, false);
-        if (enabled) {
-            Utils.startService(context, FPSInfoService.class);
-        }
-        enabled = sharedPrefs.getBoolean("refresh_rate_90Forced", false);
+        enabled = sharedPrefs.getBoolean("refresh_rate_120Forced", false);
         if (enabled) {
             RefreshRateSwitch.setForcedRefreshRate(0);
         }

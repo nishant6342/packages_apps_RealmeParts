@@ -108,10 +108,10 @@
         android:title="@string/refresh_title">
 
         <SwitchPreference
-            android:key="refresh_rate_90Forced"
-            android:icon="@drawable/refresh_rate_90forced_icon"
-            android:summary="@string/refresh_rate_90Forced_summary"
-            android:title="@string/refresh_rate_90Forced_title" />
+            android:key="refresh_rate_120Forced"
+            android:icon="@drawable/refresh_rate_120Forced_icon"
+            android:summary="@string/refresh_rate_120Forced_summary"
+            android:title="@string/refresh_rate_120Forced_title" />
 
     </PreferenceCategory>
 

@@ -62,7 +62,7 @@ public class DeviceSettings extends PreferenceFragment
     private static final String KEY_CATEGORY_REFRESH_RATE = "refresh_rate";
     public static SecureSettingListPreference mChargingSpeed;
     public static TwoStatePreference mResetStats;
-    public static TwoStatePreference mRefreshRate90Forced;
+    public static TwoStatePreference mRefreshRate120Forced;
     public static SeekBarPreference mSeekBarPreference;
     public static DisplayManager mDisplayManager;
     private static NotificationManager mNotificationManager;
@@ -133,9 +133,9 @@ public class DeviceSettings extends PreferenceFragment
         mSeekBarPreference.setEnabled(mSmartChargingSwitch.isChecked());
         SeekBarPreference.mProgress = prefs.getInt("seek_bar", 95);
 
-        mRefreshRate90Forced = findPreference("refresh_rate_90Forced");
-        mRefreshRate90Forced.setChecked(prefs.getBoolean("refresh_rate_90Forced", false));
-        mRefreshRate90Forced.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
+        mRefreshRate120Forced = findPreference("refresh_rate_120Forced");
+        mRefreshRate120Forced.setChecked(prefs.getBoolean("refresh_rate_120Forced", false));
+        mRefreshRate120Forced.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
 
         mCABC = (SecureSettingListPreference) findPreference(KEY_CABC);
         mCABC.setValue(Utils.getStringProp(CABC_SYSTEM_PROPERTY, "0"));

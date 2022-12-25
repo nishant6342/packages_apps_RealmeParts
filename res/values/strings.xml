@@ -59,8 +59,8 @@
     <string name="game_mode_notif_content">Game Mode is activated</string>
     <!-- Forced Refresh rate -->
     <string name="refresh_title">Screen Refresh Rate</string>
-    <string name="refresh_rate_90Forced_title">Smooth Display</string>
-    <string name="refresh_rate_90Forced_summary">Force display to 90Hz which improves touch responsiveness &amp; animation quality. Increases battery usage. </string>
+    <string name="refresh_rate_120Forced_title">Smooth Display</string>
+    <string name="refresh_rate_120Forced_summary">Force display to 90Hz which improves touch responsiveness &amp; animation quality. Increases battery usage. </string>
 
     <!-- Unsupported -->
     <string name="unsupported">Unsupported</string>
