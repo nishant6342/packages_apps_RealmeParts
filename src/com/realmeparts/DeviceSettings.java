@@ -51,10 +51,8 @@ public class DeviceSettings extends PreferenceFragment
     public static final String KEY_OTG_SWITCH = "otg";
 	public static final String KEY_VIBRATION_STRENGTH = "vibration_strength";
 	public static final String VIB_STRENGTH_SYSTEM_PROPERTY = "persist.vib_strength";
-    public static final String KEY_GAME_SWITCH = "game";
     public static final String KEY_CHARGING_SWITCH = "smart_charging";
     public static final String KEY_RESET_STATS = "reset_stats";
-    public static final String KEY_DND_SWITCH = "dnd";
     public static final String KEY_CABC = "cabc";
     public static final String CABC_SYSTEM_PROPERTY = "persist.cabc_profile";
     public static final String KEY_SETTINGS_PREFIX = "device_setting_";
@@ -68,7 +66,6 @@ public class DeviceSettings extends PreferenceFragment
     public static SeekBarPreference mSeekBarPreference;
     public static DisplayManager mDisplayManager;
     private static NotificationManager mNotificationManager;
-    public TwoStatePreference mDNDSwitch;
     public PreferenceCategory mPreferenceCategory;
 	private Vibrator mVibrator;
 	private SecureSettingListPreference mVibStrength;
@@ -76,7 +73,6 @@ public class DeviceSettings extends PreferenceFragment
     private TwoStatePreference mSRGBModeSwitch;
     private TwoStatePreference mHBMModeSwitch;
     private TwoStatePreference mOTGModeSwitch;
-    private TwoStatePreference mGameModeSwitch;
     private TwoStatePreference mSmartChargingSwitch;
     private boolean CABC_DeviceMatched;
     private boolean DC_DeviceMatched;
@@ -110,15 +106,6 @@ public class DeviceSettings extends PreferenceFragment
         mOTGModeSwitch.setEnabled(OTGModeSwitch.isSupported());
         mOTGModeSwitch.setChecked(OTGModeSwitch.isCurrentlyEnabled(this.getContext()));
         mOTGModeSwitch.setOnPreferenceChangeListener(new OTGModeSwitch());
-
-        mGameModeSwitch = findPreference(KEY_GAME_SWITCH);
-        mGameModeSwitch.setEnabled(GameModeSwitch.isSupported());
-        mGameModeSwitch.setChecked(GameModeSwitch.isCurrentlyEnabled(this.getContext()));
-        mGameModeSwitch.setOnPreferenceChangeListener(new GameModeSwitch(getContext()));
-
-        mDNDSwitch = findPreference(KEY_DND_SWITCH);
-        mDNDSwitch.setChecked(prefs.getBoolean(KEY_DND_SWITCH, false));
-        mDNDSwitch.setOnPreferenceChangeListener(this);
 
         mSmartChargingSwitch = findPreference(KEY_CHARGING_SWITCH);
         mSmartChargingSwitch.setChecked(prefs.getBoolean(KEY_CHARGING_SWITCH, false));
