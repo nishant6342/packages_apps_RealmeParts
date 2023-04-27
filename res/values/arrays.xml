@@ -16,11 +16,13 @@
 
     <!-- Vibration Strength -->
     <string-array name="vibration_strength_entries">
+        <item>@string/vibration_strength_discrete</item>
         <item>@string/vibration_strength_low</item>
         <item>@string/vibration_strength_medium</item>
         <item>@string/vibration_strength_high</item>
     </string-array>
     <string-array name="vibration_strength_values">
+        <item>500</item>  <!-- AW8697_HAPTIC_DISCRETE_LEVEL_VOL -->
         <item>800</item>  <!-- AW8697_HAPTIC_LOW_LEVEL_VOL -->
         <item>1600</item> <!-- AW8697_HAPTIC_MEDIUM_LEVEL_VOL -->
         <item>2500</item> <!-- AW8697_HAPTIC_HIGH_LEVEL_VOL -->

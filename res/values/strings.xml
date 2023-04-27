@@ -109,6 +109,7 @@
     <string name="refresh_rate_120Forced_summary">Force display to 120Hz which improves touch responsiveness &amp; animation quality. Increases battery usage. </string>
 	<!-- Vibration Strength -->
     <string name="vibration_strength_title">Vibration Strength</string>
+    <string name="vibration_strength_discrete">Discrete</string>
     <string name="vibration_strength_low">Low</string>
     <string name="vibration_strength_medium">Medium</string>
     <string name="vibration_strength_high">High (default)</string>
