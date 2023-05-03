@@ -69,16 +69,6 @@
             android:summary="@string/srgb_mode_summary"
             android:title="@string/srgb_mode_title" />
 
-        <Preference
-            android:key="doze"
-			android:icon="@drawable/ic_doze"
-            android:title="@string/ambient_display_gestures_title"
-            android:summary="@string/ambient_display_gestures_summary">
-            <intent android:action="android.intent.action.MAIN"
-                 android:targetPackage="com.realmeparts"
-                 android:targetClass="com.realmeparts.doze.DozeSettingsActivity"/>
-        </Preference>
-
     </PreferenceCategory>
 
     <PreferenceCategory
