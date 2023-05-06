@@ -25,6 +25,7 @@ import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 
@@ -61,6 +62,7 @@ public class DeviceSettings extends PreferenceFragment
     private static final String KEY_CATEGORY_CHARGING = "charging";
     private static final String KEY_CATEGORY_GRAPHICS = "graphics";
     private static final String KEY_CATEGORY_REFRESH_RATE = "refresh_rate";
+    private static final String KEY_CATEGORY_MTK_ENG = "mtk_engineer";
     public static TwoStatePreference mResetStats;
     public static TwoStatePreference mRefreshRate120Forced;
     public static SeekBarPreference mSeekBarPreference;
@@ -79,6 +81,7 @@ public class DeviceSettings extends PreferenceFragment
     private boolean HBM_DeviceMatched;
     private boolean sRGB_DeviceMatched;
     private SecureSettingListPreference mCABC;
+    private Preference mEngineerMode;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -133,6 +136,12 @@ public class DeviceSettings extends PreferenceFragment
         mVibStrength.setValue(Utils.getStringProp(VIB_STRENGTH_SYSTEM_PROPERTY, "2500"));
         mVibStrength.setSummary(mVibStrength.getEntry());
         mVibStrength.setOnPreferenceChangeListener(this);
+
+        mEngineerMode = (Preference) findPreference(KEY_CATEGORY_MTK_ENG);
+        boolean isDevOptionsEnabled = Settings.Global.getInt(getActivity().getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+        if ((!isDevOptionsEnabled) && (mEngineerMode != null)) {
+            getPreferenceScreen().removePreference(mEngineerMode);
+        }
 
         mVibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 

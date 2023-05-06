@@ -101,5 +101,16 @@
             android:summary="@string/otg_mode_summary"
             android:title="@string/otg_mode_title" />
 
+        <Preference
+            android:key="mtk_engineer"
+            android:icon="@drawable/ic_engineer"
+            android:title="@string/engineer_mode_title"
+            android:summary="@string/engineer_mode_summary">
+            <intent android:action="android.intent.action.MAIN"
+                 android:targetPackage="com.mediatek.engineermode"
+                 android:targetClass="com.mediatek.engineermode.EngineerMode"/>
+        
+        </Preference>
+
     </PreferenceCategory>
 </PreferenceScreen>

@@ -109,7 +109,11 @@
     <string name="vibration_strength_low">Low</string>
     <string name="vibration_strength_medium">Medium</string>
     <string name="vibration_strength_high">High (default)</string>
-	
+
+    <!-- MTK Engineer Mode-->
+    <string name="engineer_mode_title">MTK Engineer mode</string>
+    <string name="engineer_mode_summary">Do not do anything you dont understand in here</string>
+
     <!-- Unsupported -->
     <string name="unsupported">Unsupported</string>
 </resources>
