@@ -1,2 +1,0 @@
-# Allow init to write to Vibration strength node
-allow init sysfs_vibrator:file { read open write getattr }; 
