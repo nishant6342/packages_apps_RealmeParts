@@ -52,20 +52,15 @@ public class DeviceSettings extends PreferenceFragment
     public static final String KEY_OTG_SWITCH = "otg";
 	public static final String KEY_VIBRATION_STRENGTH = "vibration_strength";
 	public static final String VIB_STRENGTH_SYSTEM_PROPERTY = "persist.vib_strength";
-    public static final String KEY_CHARGING_SWITCH = "smart_charging";
-    public static final String KEY_RESET_STATS = "reset_stats";
     public static final String KEY_CABC = "cabc";
     public static final String CABC_SYSTEM_PROPERTY = "persist.cabc_profile";
     public static final String KEY_SETTINGS_PREFIX = "device_setting_";
     public static final String TP_DIRECTION = "/proc/touchpanel/oplus_tp_direction";
     private static final String ProductName = Utils.ProductName();
-    private static final String KEY_CATEGORY_CHARGING = "charging";
     private static final String KEY_CATEGORY_GRAPHICS = "graphics";
     private static final String KEY_CATEGORY_REFRESH_RATE = "refresh_rate";
     private static final String KEY_CATEGORY_MTK_ENG = "mtk_engineer";
-    public static TwoStatePreference mResetStats;
     public static TwoStatePreference mRefreshRate120Forced;
-    public static SeekBarPreference mSeekBarPreference;
     public static DisplayManager mDisplayManager;
     private static NotificationManager mNotificationManager;
     public PreferenceCategory mPreferenceCategory;
@@ -75,7 +70,6 @@ public class DeviceSettings extends PreferenceFragment
     private TwoStatePreference mSRGBModeSwitch;
     private TwoStatePreference mHBMModeSwitch;
     private TwoStatePreference mOTGModeSwitch;
-    private TwoStatePreference mSmartChargingSwitch;
     private boolean CABC_DeviceMatched;
     private boolean DC_DeviceMatched;
     private boolean HBM_DeviceMatched;
@@ -110,19 +104,6 @@ public class DeviceSettings extends PreferenceFragment
         mOTGModeSwitch.setChecked(OTGModeSwitch.isCurrentlyEnabled(this.getContext()));
         mOTGModeSwitch.setOnPreferenceChangeListener(new OTGModeSwitch());
 
-        mSmartChargingSwitch = findPreference(KEY_CHARGING_SWITCH);
-        mSmartChargingSwitch.setChecked(prefs.getBoolean(KEY_CHARGING_SWITCH, false));
-        mSmartChargingSwitch.setOnPreferenceChangeListener(new SmartChargingSwitch(getContext()));
-
-        mResetStats = findPreference(KEY_RESET_STATS);
-        mResetStats.setChecked(prefs.getBoolean(KEY_RESET_STATS, false));
-        mResetStats.setEnabled(mSmartChargingSwitch.isChecked());
-        mResetStats.setOnPreferenceChangeListener(this);
-
-        mSeekBarPreference = findPreference("seek_bar");
-        mSeekBarPreference.setEnabled(mSmartChargingSwitch.isChecked());
-        SeekBarPreference.mProgress = prefs.getInt("seek_bar", 95);
-
         mRefreshRate120Forced = findPreference("refresh_rate_120Forced");
         mRefreshRate120Forced.setChecked(prefs.getBoolean("refresh_rate_120Forced", false));
         mRefreshRate120Forced.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
@@ -144,8 +125,6 @@ public class DeviceSettings extends PreferenceFragment
         }
 
         mVibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-
-        isSmartChgAvailable();
     }
 
     @Override
@@ -164,13 +143,4 @@ public class DeviceSettings extends PreferenceFragment
         return true;
     }
 
-    // Remove Smart Charging preference if cool_down node is unavailable
-    private void isSmartChgAvailable() {
-        mPreferenceCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_CHARGING);
-
-        if (Utils.fileWritable(SmartChargingService.mmi_charging_enable)) {
-        } else {
-            getPreferenceScreen().removePreference(mPreferenceCategory);
-        }
-    }
 }

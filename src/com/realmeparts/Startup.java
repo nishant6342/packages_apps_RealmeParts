@@ -57,10 +57,6 @@ public class Startup extends BroadcastReceiver {
         restore(OTGModeSwitch.getFile(), enabled);
         enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HBM_SWITCH, false);
         restore(HBMModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_CHARGING_SWITCH, false);
-        if (enabled) {
-            Utils.startService(context, SmartChargingService.class);
-        }
         enabled = sharedPrefs.getBoolean("refresh_rate_120Forced", false);
         if (enabled) {
             RefreshRateSwitch.setForcedRefreshRate(0);
@@ -69,7 +65,6 @@ public class Startup extends BroadcastReceiver {
         if (enabled) {
             Utils.startService(context, HBMService.class);
         }
-        Utils.startService(context, ChargingCoolDownService.class);
     }
 
     private boolean hasRestoredTunable(Context context) {
